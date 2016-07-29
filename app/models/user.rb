@@ -4,4 +4,6 @@ class User
 
   field :user_id, type: String
   field :user_name, type: String
+
+  has_and_belongs_to_many :lines
 end
