@@ -1,3 +1,5 @@
+include SlackApiHelper
+
 class SlackApiController < ApplicationController
 	def handle_message
 		channel_id = params[:channel_id]
@@ -20,6 +22,15 @@ class SlackApiController < ApplicationController
 
 		line.users.push(user)
 
-		render :json => "You are number #{line.users.count} in the queue"
+		response = response_generator(line)
+
+		render :json => {
+						    "text": "The queue now is :",
+						    "attachments": [
+						        {
+						            "text": response
+						        }
+						    ]
+						}
 	end
 end
