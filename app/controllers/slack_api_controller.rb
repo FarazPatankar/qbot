@@ -11,14 +11,9 @@ class SlackApiController < ApplicationController
 		text = params[:text]
 
 		if text == "help"
+			line = find_or_create_line(channel_id, channel_name)
 
-			if line.nil?
-				line = Line.create(channel_id: channel_id, channel_name: channel_name)
-			end
-
-			if user.nil?
-				user = User.create(user_id: user_id, user_name: user_name)
-			end
+			user = find_or_create_user(user_id, user_name)
 
 			line.users.push(user)
 
@@ -33,11 +28,7 @@ class SlackApiController < ApplicationController
 							    ]
 							}
 		elsif text == "view"
-			line = Line.where(channel_id: channel_id).first
-
-			if line.nil?
-				line = Line.create(channel_id: channel_id, channel_name: channel_name)
-			end
+			line = find_or_create_line(channel_id, channel_name)
 
 			response = response_generator(line)
 
@@ -51,7 +42,7 @@ class SlackApiController < ApplicationController
 							}
 
 		elsif text == "pop"
-			line = Line.where(channel_id: channel_id).first
+			line = find_or_create_line(channel_id, channel_name)
 
 			if line.users.count > 0
 				popped_user = line.users.first.user_name
