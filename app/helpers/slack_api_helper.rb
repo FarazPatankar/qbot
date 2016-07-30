@@ -1,5 +1,5 @@
 module SlackApiHelper
-	def response_generator(line)
+	def queue_generator(line)
 		response = ""
 
 		line.users.each_with_index do |el, i|
