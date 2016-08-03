@@ -10,6 +10,8 @@ class SlackApiController < ApplicationController
 
 		text = params[:text]
 
+		poppers_array = ENV['poppers'].split("\n")
+
 		if text == "help"
 			line = find_or_create_line(channel_id, channel_name)
 			user = find_or_create_user(user_id, user_name)
@@ -26,16 +28,21 @@ class SlackApiController < ApplicationController
 			queue = queue_generator(line)
 
 		elsif text == "pop"
-			line = find_or_create_line(channel_id, channel_name)
+			if poppers_array.include?(user_id)
+				line = find_or_create_line(channel_id, channel_name)
 
-			if line.users.count > 0
-				popped_user = line.users.first.user_name
-				line.users.first.destroy
+				if line.users.count > 0
+					popped_user = line.users.first.user_name
+					line.users.first.destroy
 
-				first_field = "You popped the user - #{popped_user}. The queue now is :"
-				queue = queue_generator(line)
+					first_field = "You popped the user - #{popped_user}. The queue now is :"
+					queue = queue_generator(line)
+				else
+					first_field = "There's nothing to pop, son!"
+					queue = " "
+				end
 			else
-				first_field = "There's nothing to pop, son!"
+				first_field = "You aren't allowed to pop the queue. If you think you should be, please contact an admin."
 				queue = " "
 			end
 
