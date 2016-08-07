@@ -18,7 +18,7 @@ class SlackApiController < ApplicationController
 
 			line.users.push(user)
 
-			first_field = "The queue now is :"
+			first_field = "You have been added to the queue. The queue now is :"
 			queue = queue_generator(line)
 
 		elsif text == "view"
