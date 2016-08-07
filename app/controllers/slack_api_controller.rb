@@ -47,7 +47,7 @@ class SlackApiController < ApplicationController
 			end
 
 		else
-			first_field = "I don't get it. Perhaps you should check the documentation, son."
+			first_field = "I don't get it. Perhaps you should check the documentation, son. Here's the link : https://github.com/FarazPatankar/qbot"
 			queue = " "
 		end
 
